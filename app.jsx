@@ -189,6 +189,13 @@ const ADHDWorkManager = () => {
   const [editingProjectNotes, setEditingProjectNotes] = React.useState(false);
   const [timeReportFilter, setTimeReportFilter] = React.useState('today');
 
+  // Settings state
+  const [newPriorityName, setNewPriorityName] = React.useState('');
+  const [newPriorityColor, setNewPriorityColor] = React.useState('text-blue-400');
+  const [newPriorityIcon, setNewPriorityIcon] = React.useState('circle');
+  const [newCompanyName, setNewCompanyName] = React.useState('');
+  const [newCompanyColor, setNewCompanyColor] = React.useState('bg-blue-900/30 border-blue-500 text-blue-300');
+
   // Load data from localStorage on mount
   React.useEffect(() => {
     const loadData = async () => {
@@ -713,6 +720,77 @@ const ADHDWorkManager = () => {
 
   const dayBlocks = timeBlocks.filter(b => b.date === selectedDate);
 
+  // Priority Management Functions
+  const addPriority = () => {
+    if (!newPriorityName.trim()) return;
+
+    const priority = {
+      id: Date.now().toString(),
+      name: newPriorityName,
+      icon: newPriorityIcon,
+      color: newPriorityColor
+    };
+
+    setPriorities([...priorities, priority]);
+    setNewPriorityName('');
+    setNewPriorityColor('text-blue-400');
+    setNewPriorityIcon('circle');
+  };
+
+  const deletePriority = (priorityId) => {
+    if (priorities.length <= 1) {
+      alert('You must have at least one priority');
+      return;
+    }
+
+    setPriorities(priorities.filter(p => p.id !== priorityId));
+
+    // Update tasks with this priority to use the first remaining priority
+    const remainingPriority = priorities.find(p => p.id !== priorityId);
+    setTasks(tasks.map(t =>
+      t.priority === priorityId ? { ...t, priority: remainingPriority.id } : t
+    ));
+    setProjects(projects.map(p =>
+      p.priority === priorityId ? { ...p, priority: remainingPriority.id } : p
+    ));
+  };
+
+  const updatePrioritySettings = (priorityId, updates) => {
+    setPriorities(priorities.map(p =>
+      p.id === priorityId ? { ...p, ...updates } : p
+    ));
+  };
+
+  // Company Management Functions
+  const addCompany = () => {
+    if (!newCompanyName.trim()) return;
+
+    const company = {
+      id: Date.now().toString(),
+      name: newCompanyName,
+      color: newCompanyColor
+    };
+
+    setCompanies([...companies, company]);
+    setNewCompanyName('');
+    setNewCompanyColor('bg-blue-900/30 border-blue-500 text-blue-300');
+  };
+
+  const deleteCompany = (companyId) => {
+    setCompanies(companies.filter(c => c.id !== companyId));
+
+    // Remove company from tasks
+    setTasks(tasks.map(t =>
+      t.company === companyId ? { ...t, company: null } : t
+    ));
+  };
+
+  const updateCompanySettings = (companyId, updates) => {
+    setCompanies(companies.map(c =>
+      c.id === companyId ? { ...c, ...updates } : c
+    ));
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-800 text-white p-6">
       {/* Header */}
@@ -1129,29 +1207,177 @@ const ADHDWorkManager = () => {
 
               <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
                 <h3 className="text-lg font-semibold mb-4">Priorities</h3>
-                <div className="space-y-2">
+
+                <div className="space-y-3 mb-4">
                   {priorities.map(priority => {
                     const PriorityIcon = priorityIcons[priority.icon];
                     return (
-                      <div key={priority.id} className="flex items-center gap-2 p-2 bg-gray-700 rounded">
+                      <div key={priority.id} className="flex items-center gap-3 p-3 bg-gray-700 rounded-lg">
                         <div className={`w-5 h-5 ${priority.color}`}>
                           <PriorityIcon />
                         </div>
-                        <span>{priority.name}</span>
+                        <input
+                          type="text"
+                          value={priority.name}
+                          onChange={(e) => updatePrioritySettings(priority.id, { name: e.target.value })}
+                          className="flex-1 bg-gray-800 border border-gray-600 rounded px-2 py-1 text-sm"
+                        />
+                        <select
+                          value={priority.icon}
+                          onChange={(e) => updatePrioritySettings(priority.id, { icon: e.target.value })}
+                          className="bg-gray-800 border border-gray-600 rounded px-2 py-1 text-sm"
+                        >
+                          <option value="zap">⚡ Zap</option>
+                          <option value="target">🎯 Target</option>
+                          <option value="circle">⭕ Circle</option>
+                          <option value="brain">🧠 Brain</option>
+                          <option value="clock">🕐 Clock</option>
+                          <option value="calendar">📅 Calendar</option>
+                        </select>
+                        <select
+                          value={priority.color}
+                          onChange={(e) => updatePrioritySettings(priority.id, { color: e.target.value })}
+                          className="bg-gray-800 border border-gray-600 rounded px-2 py-1 text-sm"
+                        >
+                          <option value="text-red-400">🔴 Red</option>
+                          <option value="text-orange-400">🟠 Orange</option>
+                          <option value="text-yellow-400">🟡 Yellow</option>
+                          <option value="text-green-400">🟢 Green</option>
+                          <option value="text-blue-400">🔵 Blue</option>
+                          <option value="text-indigo-400">🟣 Indigo</option>
+                          <option value="text-purple-400">🟣 Purple</option>
+                          <option value="text-pink-400">💗 Pink</option>
+                          <option value="text-gray-400">⚪ Gray</option>
+                        </select>
+                        <button
+                          onClick={() => deletePriority(priority.id)}
+                          className="w-8 h-8 text-red-400 hover:text-red-300 flex items-center justify-center"
+                        >
+                          <div className="w-4 h-4"><Trash2 /></div>
+                        </button>
                       </div>
                     );
                   })}
+                </div>
+
+                <div className="border-t border-gray-700 pt-4">
+                  <h4 className="text-sm font-semibold mb-3">Add New Priority</h4>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={newPriorityName}
+                      onChange={(e) => setNewPriorityName(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && addPriority()}
+                      placeholder="Priority name"
+                      className="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm"
+                    />
+                    <select
+                      value={newPriorityIcon}
+                      onChange={(e) => setNewPriorityIcon(e.target.value)}
+                      className="bg-gray-700 border border-gray-600 rounded px-2 py-2 text-sm"
+                    >
+                      <option value="zap">⚡ Zap</option>
+                      <option value="target">🎯 Target</option>
+                      <option value="circle">⭕ Circle</option>
+                      <option value="brain">🧠 Brain</option>
+                      <option value="clock">🕐 Clock</option>
+                      <option value="calendar">📅 Calendar</option>
+                    </select>
+                    <select
+                      value={newPriorityColor}
+                      onChange={(e) => setNewPriorityColor(e.target.value)}
+                      className="bg-gray-700 border border-gray-600 rounded px-2 py-2 text-sm"
+                    >
+                      <option value="text-red-400">🔴 Red</option>
+                      <option value="text-orange-400">🟠 Orange</option>
+                      <option value="text-yellow-400">🟡 Yellow</option>
+                      <option value="text-green-400">🟢 Green</option>
+                      <option value="text-blue-400">🔵 Blue</option>
+                      <option value="text-indigo-400">🟣 Indigo</option>
+                      <option value="text-purple-400">🟣 Purple</option>
+                      <option value="text-pink-400">💗 Pink</option>
+                      <option value="text-gray-400">⚪ Gray</option>
+                    </select>
+                    <button
+                      onClick={addPriority}
+                      className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded flex items-center gap-2"
+                    >
+                      <div className="w-4 h-4"><Plus /></div>
+                    </button>
+                  </div>
                 </div>
               </div>
 
               <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
                 <h3 className="text-lg font-semibold mb-4">Companies</h3>
-                <div className="space-y-2">
+
+                <div className="space-y-3 mb-4">
                   {companies.map(company => (
-                    <div key={company.id} className={`p-3 rounded-lg border ${company.color}`}>
-                      {company.name}
+                    <div key={company.id} className={`flex items-center gap-3 p-3 rounded-lg border ${company.color}`}>
+                      <input
+                        type="text"
+                        value={company.name}
+                        onChange={(e) => updateCompanySettings(company.id, { name: e.target.value })}
+                        className="flex-1 bg-gray-800 border border-gray-600 rounded px-2 py-1 text-sm"
+                      />
+                      <select
+                        value={company.color}
+                        onChange={(e) => updateCompanySettings(company.id, { color: e.target.value })}
+                        className="bg-gray-800 border border-gray-600 rounded px-2 py-1 text-sm"
+                      >
+                        <option value="bg-red-900/30 border-red-500 text-red-300">🔴 Red</option>
+                        <option value="bg-orange-900/30 border-orange-500 text-orange-300">🟠 Orange</option>
+                        <option value="bg-yellow-900/30 border-yellow-500 text-yellow-300">🟡 Yellow</option>
+                        <option value="bg-green-900/30 border-green-500 text-green-300">🟢 Green</option>
+                        <option value="bg-blue-900/30 border-blue-500 text-blue-300">🔵 Blue</option>
+                        <option value="bg-indigo-900/30 border-indigo-500 text-indigo-300">🟣 Indigo</option>
+                        <option value="bg-purple-900/30 border-purple-500 text-purple-300">🟣 Purple</option>
+                        <option value="bg-pink-900/30 border-pink-500 text-pink-300">💗 Pink</option>
+                        <option value="bg-gray-900/30 border-gray-500 text-gray-300">⚪ Gray</option>
+                      </select>
+                      <button
+                        onClick={() => deleteCompany(company.id)}
+                        className="w-8 h-8 text-red-400 hover:text-red-300 flex items-center justify-center"
+                      >
+                        <div className="w-4 h-4"><Trash2 /></div>
+                      </button>
                     </div>
                   ))}
+                </div>
+
+                <div className="border-t border-gray-700 pt-4">
+                  <h4 className="text-sm font-semibold mb-3">Add New Company</h4>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={newCompanyName}
+                      onChange={(e) => setNewCompanyName(e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && addCompany()}
+                      placeholder="Company name"
+                      className="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm"
+                    />
+                    <select
+                      value={newCompanyColor}
+                      onChange={(e) => setNewCompanyColor(e.target.value)}
+                      className="bg-gray-700 border border-gray-600 rounded px-2 py-2 text-sm"
+                    >
+                      <option value="bg-red-900/30 border-red-500 text-red-300">🔴 Red</option>
+                      <option value="bg-orange-900/30 border-orange-500 text-orange-300">🟠 Orange</option>
+                      <option value="bg-yellow-900/30 border-yellow-500 text-yellow-300">🟡 Yellow</option>
+                      <option value="bg-green-900/30 border-green-500 text-green-300">🟢 Green</option>
+                      <option value="bg-blue-900/30 border-blue-500 text-blue-300">🔵 Blue</option>
+                      <option value="bg-indigo-900/30 border-indigo-500 text-indigo-300">🟣 Indigo</option>
+                      <option value="bg-purple-900/30 border-purple-500 text-purple-300">🟣 Purple</option>
+                      <option value="bg-pink-900/30 border-pink-500 text-pink-300">💗 Pink</option>
+                      <option value="bg-gray-900/30 border-gray-500 text-gray-300">⚪ Gray</option>
+                    </select>
+                    <button
+                      onClick={addCompany}
+                      className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded flex items-center gap-2"
+                    >
+                      <div className="w-4 h-4"><Plus /></div>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
