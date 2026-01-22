@@ -183,6 +183,10 @@ const ADHDWorkManager = () => {
   const [resizeStartDuration, setResizeStartDuration] = React.useState(0);
   const [dragOverY, setDragOverY] = React.useState(null);
   const [isResizingSidebar, setIsResizingSidebar] = React.useState(false);
+  const [resizeSidebarStartX, setResizeSidebarStartX] = React.useState(0);
+  const [resizeSidebarStartWidth, setResizeSidebarStartWidth] = React.useState(0);
+  const [draggedProject, setDraggedProject] = React.useState(null);
+  const [dragOverProject, setDragOverProject] = React.useState(null);
 
   // Editor state
   const [editingNotes, setEditingNotes] = React.useState(false);
@@ -791,6 +795,84 @@ const ADHDWorkManager = () => {
     ));
   };
 
+  // Sidebar Resize Handlers
+  const handleSidebarResizeStart = (e) => {
+    e.preventDefault();
+    setIsResizingSidebar(true);
+    setResizeSidebarStartX(e.clientX);
+    setResizeSidebarStartWidth(sidebarWidth);
+  };
+
+  const handleSidebarResizeMove = (e) => {
+    if (!isResizingSidebar) return;
+
+    const deltaX = resizeSidebarStartX - e.clientX;
+    const newWidth = Math.max(300, Math.min(800, resizeSidebarStartWidth + deltaX));
+    setSidebarWidth(newWidth);
+  };
+
+  const handleSidebarResizeEnd = () => {
+    setIsResizingSidebar(false);
+  };
+
+  React.useEffect(() => {
+    if (isResizingSidebar) {
+      document.addEventListener('mousemove', handleSidebarResizeMove);
+      document.addEventListener('mouseup', handleSidebarResizeEnd);
+      return () => {
+        document.removeEventListener('mousemove', handleSidebarResizeMove);
+        document.removeEventListener('mouseup', handleSidebarResizeEnd);
+      };
+    }
+  }, [isResizingSidebar, resizeSidebarStartX, resizeSidebarStartWidth]);
+
+  // Project Drag and Drop Handlers
+  const handleProjectDragStart = (e, project) => {
+    setDraggedProject(project);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleProjectDragOver = (e, project) => {
+    e.preventDefault();
+    if (draggedProject && draggedProject.id !== project.id) {
+      setDragOverProject(project);
+    }
+  };
+
+  const handleProjectDrop = (e, targetProject) => {
+    e.preventDefault();
+
+    if (!draggedProject || draggedProject.id === targetProject.id) {
+      setDraggedProject(null);
+      setDragOverProject(null);
+      return;
+    }
+
+    // Reorder projects
+    const updatedProjects = [...projects];
+    const draggedIndex = updatedProjects.findIndex(p => p.id === draggedProject.id);
+    const targetIndex = updatedProjects.findIndex(p => p.id === targetProject.id);
+
+    // Remove dragged project and insert at target position
+    const [removed] = updatedProjects.splice(draggedIndex, 1);
+    updatedProjects.splice(targetIndex, 0, removed);
+
+    // Update order property for all projects
+    const reorderedProjects = updatedProjects.map((p, index) => ({
+      ...p,
+      order: index
+    }));
+
+    setProjects(reorderedProjects);
+    setDraggedProject(null);
+    setDragOverProject(null);
+  };
+
+  const handleProjectDragEnd = () => {
+    setDraggedProject(null);
+    setDragOverProject(null);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-800 text-white p-6">
       {/* Header */}
@@ -1110,13 +1192,23 @@ const ADHDWorkManager = () => {
                     return (
                       <div
                         key={project.id}
+                        draggable={!project.archived}
+                        onDragStart={(e) => handleProjectDragStart(e, project)}
+                        onDragOver={(e) => handleProjectDragOver(e, project)}
+                        onDrop={(e) => handleProjectDrop(e, project)}
+                        onDragEnd={handleProjectDragEnd}
                         onClick={() => setSelectedTask({ ...project, type: 'project' })}
-                        className={`bg-gray-800 rounded-xl p-4 border cursor-pointer transition-all ${
-                          project.archived ? 'border-gray-700 opacity-50' : 'border-gray-700 hover:border-indigo-500'
-                        } ${selectedTask?.id === project.id ? 'ring-2 ring-indigo-500' : ''}`}
+                        className={`bg-gray-800 rounded-xl p-4 border cursor-move transition-all ${
+                          project.archived ? 'border-gray-700 opacity-50 cursor-pointer' : 'border-gray-700 hover:border-indigo-500'
+                        } ${selectedTask?.id === project.id ? 'ring-2 ring-indigo-500' : ''} ${
+                          dragOverProject?.id === project.id ? 'border-t-4 border-t-indigo-500' : ''
+                        } ${draggedProject?.id === project.id ? 'opacity-50' : ''}`}
                       >
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex items-center gap-2">
+                            <div className="w-5 h-5 text-gray-400 cursor-grab active:cursor-grabbing">
+                              <GripVertical />
+                            </div>
                             <div className={`w-5 h-5 ${priority?.color}`}>
                               <PriorityIcon />
                             </div>
@@ -1391,6 +1483,13 @@ const ADHDWorkManager = () => {
           className="fixed right-0 top-0 h-screen bg-gray-900 border-l border-gray-700 overflow-y-auto z-50"
           style={{ width: `${sidebarWidth}px` }}
         >
+          {/* Resize Handle */}
+          <div
+            onMouseDown={handleSidebarResizeStart}
+            className="absolute left-0 top-0 bottom-0 w-1 cursor-ew-resize hover:bg-indigo-500 transition-colors group"
+          >
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-12 bg-gray-600 group-hover:bg-indigo-500 transition-colors" />
+          </div>
           <div className="p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold">
