@@ -200,6 +200,10 @@ const ADHDWorkManager = () => {
   const [newCompanyName, setNewCompanyName] = React.useState('');
   const [newCompanyColor, setNewCompanyColor] = React.useState('bg-blue-900/30 border-blue-500 text-blue-300');
 
+  // App customization
+  const [appName, setAppName] = React.useState('ADHD Work Manager');
+  const [appIcon, setAppIcon] = React.useState('brain');
+
   // Load data from localStorage on mount
   React.useEffect(() => {
     const loadData = async () => {
@@ -244,6 +248,17 @@ const ADHDWorkManager = () => {
           setCompanies(JSON.parse(savedCompanies.value));
         }
 
+        // Load app customization
+        const savedAppName = await window.storage.get('adhd-app-name');
+        if (savedAppName?.value) {
+          setAppName(savedAppName.value);
+        }
+
+        const savedAppIcon = await window.storage.get('adhd-app-icon');
+        if (savedAppIcon?.value) {
+          setAppIcon(savedAppIcon.value);
+        }
+
         console.log('Data loaded successfully');
       } catch (error) {
         console.error('Error loading data:', error);
@@ -262,13 +277,15 @@ const ADHDWorkManager = () => {
         await window.storage.set('adhd-projects', JSON.stringify(projects));
         await window.storage.set('adhd-priorities', JSON.stringify(priorities));
         await window.storage.set('adhd-companies', JSON.stringify(companies));
+        await window.storage.set('adhd-app-name', appName);
+        await window.storage.set('adhd-app-icon', appIcon);
       } catch (error) {
         console.error('Error saving data:', error);
       }
     };
 
     saveData();
-  }, [tasks, timeBlocks, projects, priorities, companies]);
+  }, [tasks, timeBlocks, projects, priorities, companies, appName, appIcon]);
 
   // Task Management Functions
   const addTask = () => {
@@ -876,58 +893,58 @@ const ADHDWorkManager = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-800 text-white p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white p-4 sm:p-6">
       {/* Header */}
       <div className="max-w-[1800px] mx-auto mb-6">
-        <div className="bg-gradient-to-r from-indigo-900/30 to-purple-900/30 rounded-2xl p-6 border border-indigo-500/20">
+        <div className="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 backdrop-blur-xl rounded-2xl p-6 border border-white/10 shadow-2xl shadow-indigo-500/20">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 text-indigo-400">
-                <Brain />
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/50 text-white">
+                {React.createElement(priorityIcons[appIcon] || Brain, { className: "w-7 h-7" })}
               </div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                ADHD Work Manager
+              <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200 bg-clip-text text-transparent">
+                {appName}
               </h1>
             </div>
 
             <div className="flex gap-2">
               <button
                 onClick={() => setView('today')}
-                className={`px-4 py-2 rounded-lg transition-all ${
+                className={`px-4 py-2.5 rounded-xl font-medium transition-all duration-200 ${
                   view === 'today'
-                    ? 'bg-indigo-600 text-white'
-                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                    ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/50 scale-105'
+                    : 'bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10'
                 }`}
               >
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4"><Calendar /></div>
-                  Today
+                  <span className="hidden sm:inline">Today</span>
                 </div>
               </button>
               <button
                 onClick={() => setView('projects')}
-                className={`px-4 py-2 rounded-lg transition-all ${
+                className={`px-4 py-2.5 rounded-xl font-medium transition-all duration-200 ${
                   view === 'projects'
-                    ? 'bg-indigo-600 text-white'
-                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                    ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/50 scale-105'
+                    : 'bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10'
                 }`}
               >
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4"><Target /></div>
-                  Projects
+                  <span className="hidden sm:inline">Projects</span>
                 </div>
               </button>
               <button
                 onClick={() => setView('settings')}
-                className={`px-4 py-2 rounded-lg transition-all ${
+                className={`px-4 py-2.5 rounded-xl font-medium transition-all duration-200 ${
                   view === 'settings'
-                    ? 'bg-indigo-600 text-white'
-                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                    ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/50 scale-105'
+                    : 'bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10'
                 }`}
               >
                 <div className="flex items-center gap-2">
                   <div className="w-4 h-4"><Settings /></div>
-                  Settings
+                  <span className="hidden sm:inline">Settings</span>
                 </div>
               </button>
             </div>
@@ -937,18 +954,18 @@ const ADHDWorkManager = () => {
 
       {/* Quick Add Input */}
       <div className="max-w-[1800px] mx-auto mb-6">
-        <div className="relative">
+        <div className="relative group">
           <input
             type="text"
             value={newTask}
             onChange={(e) => setNewTask(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && addTask()}
             placeholder="Brain dump: What's on your mind?"
-            className="w-full bg-gray-800 border-2 border-gray-700 rounded-lg p-4 pr-12 text-white placeholder-gray-400 focus:border-indigo-500 focus:outline-none"
+            className="w-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4 pr-14 text-white placeholder-gray-400 focus:border-indigo-500/50 focus:bg-white/10 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition-all duration-200 shadow-lg"
           />
           <button
             onClick={addTask}
-            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-indigo-600 hover:bg-indigo-700 rounded-lg flex items-center justify-center transition-colors"
+            className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 rounded-lg flex items-center justify-center transition-all duration-200 shadow-lg shadow-indigo-500/50 group-hover:scale-110"
           >
             <div className="w-5 h-5"><Plus /></div>
           </button>
@@ -959,12 +976,12 @@ const ADHDWorkManager = () => {
       <div className="max-w-[1800px] mx-auto flex gap-6">
         {/* Left Sidebar - Unscheduled Tasks or Projects */}
         <div className="w-96 flex-shrink-0">
-          <div className="bg-gray-800/50 rounded-xl p-4 border border-gray-700">
+          <div className="bg-white/5 backdrop-blur-xl rounded-xl p-4 border border-white/10 shadow-xl">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">
+              <h2 className="text-xl font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                 {view === 'today' ? 'Unscheduled Tasks' : 'All Tasks'}
               </h2>
-              <div className="text-sm text-gray-400">
+              <div className="px-2.5 py-1 bg-indigo-500/20 rounded-lg text-sm text-indigo-300 font-medium border border-indigo-500/30">
                 {unscheduledTasks.length}
               </div>
             </div>
@@ -982,11 +999,11 @@ const ADHDWorkManager = () => {
                       e.dataTransfer.setData('taskId', task.id.toString());
                     }}
                     onClick={() => setSelectedTask({ ...task, type: 'task' })}
-                    className={`p-3 rounded-lg border cursor-pointer transition-all ${
+                    className={`p-3 rounded-xl border cursor-pointer transition-all duration-200 ${
                       task.completed
-                        ? 'bg-gray-900/50 border-gray-700 opacity-50'
-                        : 'bg-gray-900 border-gray-700 hover:border-indigo-500'
-                    } ${selectedTask?.id === task.id ? 'ring-2 ring-indigo-500' : ''}`}
+                        ? 'bg-white/5 border-white/5 opacity-50'
+                        : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/10'
+                    } ${selectedTask?.id === task.id ? 'ring-2 ring-indigo-500/50 bg-indigo-500/10 border-indigo-500/50' : ''}`}
                   >
                     <div className="flex items-start gap-2">
                       <button
@@ -1028,9 +1045,9 @@ const ADHDWorkManager = () => {
         {/* Center Content */}
         <div className="flex-1">
           {view === 'today' && (
-            <div className="bg-gray-800/50 rounded-xl border border-gray-700">
+            <div className="bg-white/5 backdrop-blur-xl rounded-xl border border-white/10 shadow-xl">
               {/* Date Navigation */}
-              <div className="p-4 border-b border-gray-700 flex items-center justify-between">
+              <div className="p-4 border-b border-white/10 flex items-center justify-between backdrop-blur">
                 <div className="flex items-center gap-4">
                   <button
                     onClick={() => {
@@ -1044,11 +1061,11 @@ const ADHDWorkManager = () => {
                         setSelectedDate(date.toISOString().split('T')[0]);
                       }
                     }}
-                    className="w-8 h-8 hover:bg-gray-700 rounded-lg flex items-center justify-center"
+                    className="w-9 h-9 hover:bg-white/10 rounded-lg flex items-center justify-center transition-all duration-200 border border-white/10 hover:border-indigo-500/50"
                   >
                     <div className="w-5 h-5"><ChevronLeft /></div>
                   </button>
-                  <h3 className="text-lg font-semibold">
+                  <h3 className="text-lg font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                     {calendarView === 'day'
                       ? new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', {
                           weekday: 'long',
@@ -1073,31 +1090,31 @@ const ADHDWorkManager = () => {
                         setSelectedDate(date.toISOString().split('T')[0]);
                       }
                     }}
-                    className="w-8 h-8 hover:bg-gray-700 rounded-lg flex items-center justify-center"
+                    className="w-9 h-9 hover:bg-white/10 rounded-lg flex items-center justify-center transition-all duration-200 border border-white/10 hover:border-indigo-500/50"
                   >
                     <div className="w-5 h-5"><ChevronRight /></div>
                   </button>
                   <button
                     onClick={() => setSelectedDate(new Date().toISOString().split('T')[0])}
-                    className="px-3 py-1 bg-indigo-600 hover:bg-indigo-700 rounded text-sm"
+                    className="px-4 py-1.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 rounded-lg text-sm font-medium transition-all duration-200 shadow-lg shadow-indigo-500/50"
                   >
                     Today
                   </button>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="flex bg-gray-700 rounded-lg p-1">
+                  <div className="flex bg-white/5 rounded-lg p-1 border border-white/10">
                     <button
                       onClick={() => setCalendarView('day')}
-                      className={`px-3 py-1 rounded text-sm transition-colors ${
-                        calendarView === 'day' ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:text-white'
+                      className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                        calendarView === 'day' ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg' : 'text-gray-300 hover:text-white hover:bg-white/5'
                       }`}
                     >
                       Day
                     </button>
                     <button
                       onClick={() => setCalendarView('week')}
-                      className={`px-3 py-1 rounded text-sm transition-colors ${
-                        calendarView === 'week' ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:text-white'
+                      className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                        calendarView === 'week' ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg' : 'text-gray-300 hover:text-white hover:bg-white/5'
                       }`}
                     >
                       Week
@@ -1108,7 +1125,7 @@ const ADHDWorkManager = () => {
                       type="date"
                       value={selectedDate}
                       onChange={(e) => setSelectedDate(e.target.value)}
-                      className="bg-gray-700 border border-gray-600 rounded px-3 py-1 text-sm"
+                      className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none transition-all"
                     />
                   )}
                 </div>
@@ -1331,10 +1348,10 @@ const ADHDWorkManager = () => {
           {view === 'projects' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold">Projects</h2>
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Projects</h2>
                 <button
                   onClick={() => setShowNewProjectModal(true)}
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg flex items-center gap-2"
+                  className="px-4 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 rounded-xl flex items-center gap-2 transition-all duration-200 shadow-lg shadow-indigo-500/50 font-medium"
                 >
                   <div className="w-4 h-4"><Plus /></div>
                   New Project
@@ -1360,11 +1377,11 @@ const ADHDWorkManager = () => {
                         onDrop={(e) => handleProjectDrop(e, project)}
                         onDragEnd={handleProjectDragEnd}
                         onClick={() => setSelectedTask({ ...project, type: 'project' })}
-                        className={`rounded-xl p-4 border cursor-move transition-all ${
-                          company ? company.color : 'bg-gray-800 border-gray-700'
+                        className={`rounded-xl p-4 border cursor-move transition-all duration-200 backdrop-blur-xl shadow-xl ${
+                          company ? company.color : 'bg-white/5 border-white/10'
                         } ${
-                          project.archived ? 'opacity-50 cursor-pointer' : 'hover:border-indigo-500'
-                        } ${selectedTask?.id === project.id ? 'ring-2 ring-indigo-500' : ''} ${
+                          project.archived ? 'opacity-50 cursor-pointer' : 'hover:border-indigo-500/50 hover:shadow-2xl hover:shadow-indigo-500/10'
+                        } ${selectedTask?.id === project.id ? 'ring-2 ring-indigo-500/50 shadow-indigo-500/20' : ''} ${
                           dragOverProject?.id === project.id ? 'border-t-4 border-t-indigo-500' : ''
                         } ${draggedProject?.id === project.id ? 'opacity-50' : ''}`}
                       >
@@ -1428,9 +1445,62 @@ const ADHDWorkManager = () => {
 
           {view === 'settings' && (
             <div className="space-y-6">
-              <h2 className="text-2xl font-bold">Settings</h2>
+              <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">Settings</h2>
 
-              <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
+              {/* App Customization */}
+              <div className="bg-white/5 backdrop-blur-xl rounded-xl p-6 border border-white/10 shadow-xl">
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                  <span>App Customization</span>
+                </h3>
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm text-gray-400 mb-2">App Name</label>
+                    <input
+                      type="text"
+                      value={appName}
+                      onChange={(e) => setAppName(e.target.value)}
+                      placeholder="My Awesome App"
+                      className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2 focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-gray-400 mb-2">App Icon</label>
+                    <div className="grid grid-cols-6 gap-2">
+                      {Object.keys(priorityIcons).map(iconKey => {
+                        const IconComponent = priorityIcons[iconKey];
+                        return (
+                          <button
+                            key={iconKey}
+                            onClick={() => setAppIcon(iconKey)}
+                            className={`p-3 rounded-lg border transition-all duration-200 ${
+                              appIcon === iconKey
+                                ? 'bg-gradient-to-r from-indigo-500 to-purple-600 border-indigo-400 shadow-lg shadow-indigo-500/50 scale-110'
+                                : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-indigo-500/50'
+                            }`}
+                          >
+                            <div className="w-6 h-6">
+                              <IconComponent />
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-t border-white/10">
+                    <div className="flex items-center gap-3 p-4 bg-white/5 rounded-lg border border-white/10">
+                      <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg">
+                        {React.createElement(priorityIcons[appIcon] || Brain, { className: "w-6 h-6" })}
+                      </div>
+                      <span className="text-lg font-semibold">{appName}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white/5 backdrop-blur-xl rounded-xl p-6 border border-white/10 shadow-xl">
                 <h3 className="text-lg font-semibold mb-4">Time Tracking Report</h3>
 
                 <div className="flex gap-2 mb-4">
@@ -1466,7 +1536,7 @@ const ADHDWorkManager = () => {
                 </div>
               </div>
 
-              <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
+              <div className="bg-white/5 backdrop-blur-xl rounded-xl p-6 border border-white/10 shadow-xl">
                 <h3 className="text-lg font-semibold mb-4">Priorities</h3>
 
                 <div className="space-y-3 mb-4">
@@ -1569,7 +1639,7 @@ const ADHDWorkManager = () => {
                 </div>
               </div>
 
-              <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
+              <div className="bg-white/5 backdrop-blur-xl rounded-xl p-6 border border-white/10 shadow-xl">
                 <h3 className="text-lg font-semibold mb-4">Companies</h3>
 
                 <div className="space-y-3 mb-4">
