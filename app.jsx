@@ -226,7 +226,8 @@ const ADHDWorkManager = () => {
             order: p.order ?? p.id,
             createdAt: p.createdAt ?? new Date().toISOString(),
             notes: p.notes ?? '',
-            priority: p.priority ?? 'medium'
+            priority: p.priority ?? 'medium',
+            company: p.company ?? null
           }));
           setProjects(migrated);
         }
@@ -460,6 +461,7 @@ const ADHDWorkManager = () => {
       name: newProjectName,
       archived: false,
       priority: priorities[0].id,
+      company: null,
       notes: '',
       order: Date.now(),
       createdAt: new Date().toISOString()
@@ -1032,26 +1034,44 @@ const ADHDWorkManager = () => {
                 <div className="flex items-center gap-4">
                   <button
                     onClick={() => {
-                      const date = new Date(selectedDate + 'T12:00:00');
-                      date.setDate(date.getDate() - 1);
-                      setSelectedDate(date.toISOString().split('T')[0]);
+                      if (calendarView === 'day') {
+                        const date = new Date(selectedDate + 'T12:00:00');
+                        date.setDate(date.getDate() - 1);
+                        setSelectedDate(date.toISOString().split('T')[0]);
+                      } else {
+                        const date = new Date(selectedDate + 'T12:00:00');
+                        date.setDate(date.getDate() - 7);
+                        setSelectedDate(date.toISOString().split('T')[0]);
+                      }
                     }}
                     className="w-8 h-8 hover:bg-gray-700 rounded-lg flex items-center justify-center"
                   >
                     <div className="w-5 h-5"><ChevronLeft /></div>
                   </button>
                   <h3 className="text-lg font-semibold">
-                    {new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', {
-                      weekday: 'long',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
+                    {calendarView === 'day'
+                      ? new Date(selectedDate + 'T12:00:00').toLocaleDateString('en-US', {
+                          weekday: 'long',
+                          month: 'long',
+                          day: 'numeric'
+                        })
+                      : `Week of ${getWeekDates(selectedDate)[0].fullDate.toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric'
+                        })}`
+                    }
                   </h3>
                   <button
                     onClick={() => {
-                      const date = new Date(selectedDate + 'T12:00:00');
-                      date.setDate(date.getDate() + 1);
-                      setSelectedDate(date.toISOString().split('T')[0]);
+                      if (calendarView === 'day') {
+                        const date = new Date(selectedDate + 'T12:00:00');
+                        date.setDate(date.getDate() + 1);
+                        setSelectedDate(date.toISOString().split('T')[0]);
+                      } else {
+                        const date = new Date(selectedDate + 'T12:00:00');
+                        date.setDate(date.getDate() + 7);
+                        setSelectedDate(date.toISOString().split('T')[0]);
+                      }
                     }}
                     className="w-8 h-8 hover:bg-gray-700 rounded-lg flex items-center justify-center"
                   >
@@ -1064,16 +1084,39 @@ const ADHDWorkManager = () => {
                     Today
                   </button>
                 </div>
-                <input
-                  type="date"
-                  value={selectedDate}
-                  onChange={(e) => setSelectedDate(e.target.value)}
-                  className="bg-gray-700 border border-gray-600 rounded px-3 py-1 text-sm"
-                />
+                <div className="flex items-center gap-2">
+                  <div className="flex bg-gray-700 rounded-lg p-1">
+                    <button
+                      onClick={() => setCalendarView('day')}
+                      className={`px-3 py-1 rounded text-sm transition-colors ${
+                        calendarView === 'day' ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:text-white'
+                      }`}
+                    >
+                      Day
+                    </button>
+                    <button
+                      onClick={() => setCalendarView('week')}
+                      className={`px-3 py-1 rounded text-sm transition-colors ${
+                        calendarView === 'week' ? 'bg-indigo-600 text-white' : 'text-gray-300 hover:text-white'
+                      }`}
+                    >
+                      Week
+                    </button>
+                  </div>
+                  {calendarView === 'day' && (
+                    <input
+                      type="date"
+                      value={selectedDate}
+                      onChange={(e) => setSelectedDate(e.target.value)}
+                      className="bg-gray-700 border border-gray-600 rounded px-3 py-1 text-sm"
+                    />
+                  )}
+                </div>
               </div>
 
               {/* Calendar Grid */}
               <div className="p-4">
+                {calendarView === 'day' ? (
                 <div className="relative" style={{ height: '1120px' }}>
                   {/* Time labels */}
                   <div className="absolute left-0 top-0 bottom-0 w-20">
@@ -1163,6 +1206,124 @@ const ADHDWorkManager = () => {
                     })}
                   </div>
                 </div>
+                ) : (
+                  // Week View
+                  <div className="relative overflow-x-auto">
+                    <div className="inline-flex gap-1 min-w-full">
+                      {/* Time labels column */}
+                      <div className="w-16 flex-shrink-0">
+                        <div className="h-12"></div>
+                        {Array.from({ length: 14 }, (_, i) => i + 7).map(hour => (
+                          <div key={hour} className="h-20 flex items-start justify-end pr-2 text-xs text-gray-400">
+                            {formatTime12Hour(`${hour}:00`)}
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Week days columns */}
+                      {getWeekDates(selectedDate).map(({ date, dayName, fullDate }) => {
+                        const isToday = date === new Date().toISOString().split('T')[0];
+                        const dayBlocks = timeBlocks.filter(b => b.date === date);
+
+                        return (
+                          <div key={date} className="flex-1 min-w-[180px]">
+                            {/* Day header */}
+                            <div className={`h-12 flex flex-col items-center justify-center border-b border-gray-700 ${
+                              isToday ? 'bg-indigo-900/20' : ''
+                            }`}>
+                              <div className="text-xs text-gray-400">{dayName}</div>
+                              <div className={`text-sm font-semibold ${isToday ? 'text-indigo-400' : ''}`}>
+                                {fullDate.getDate()}
+                              </div>
+                            </div>
+
+                            {/* Time grid */}
+                            <div
+                              className="relative"
+                              style={{ height: '1120px' }}
+                              onDragOver={handleDragOver}
+                              onDragLeave={() => setDragOverY(null)}
+                              onDrop={(e) => {
+                                e.preventDefault();
+                                setDragOverY(null);
+
+                                const container = e.currentTarget;
+                                const rect = container.getBoundingClientRect();
+                                const time = getTimeFromPosition(e.clientY, rect.top);
+
+                                if (!time) return;
+
+                                const taskId = parseInt(e.dataTransfer.getData('taskId'));
+                                if (taskId) {
+                                  scheduleTask(taskId, date, time);
+                                }
+                              }}
+                            >
+                              {/* Hour lines */}
+                              {Array.from({ length: 14 }, (_, i) => i).map(i => (
+                                <div
+                                  key={i}
+                                  className="absolute left-0 right-0 border-t border-gray-700"
+                                  style={{ top: `${i * 80}px` }}
+                                />
+                              ))}
+
+                              {/* Time blocks */}
+                              {dayBlocks.map(block => {
+                                const task = tasks.find(t => t.id === block.taskId);
+                                if (!task) return null;
+
+                                const priority = priorities.find(p => p.id === task.priority);
+                                const PriorityIcon = priorityIcons[priority?.icon] || Circle;
+
+                                return (
+                                  <div
+                                    key={block.id}
+                                    className={`absolute left-0 right-0 rounded-lg p-2 border-l-4 cursor-pointer transition-all ${
+                                      companies.find(c => c.id === task.company)?.color || 'bg-gray-700/50 border-gray-500'
+                                    }`}
+                                    style={{
+                                      top: `${(timeToMinutes(block.time) / 60) * 80}px`,
+                                      height: `${(block.duration / 60) * 80}px`
+                                    }}
+                                    onClick={() => setSelectedTask({ ...task, type: 'task' })}
+                                  >
+                                    <div className="flex items-start justify-between h-full">
+                                      <div className="flex-1 min-w-0">
+                                        <div className="flex items-center gap-1 mb-1">
+                                          <div className={`w-3 h-3 ${priority?.color}`}>
+                                            <PriorityIcon />
+                                          </div>
+                                          <span className="text-xs font-semibold truncate">{task.text}</span>
+                                        </div>
+                                        <div className="text-xs text-gray-300">
+                                          {formatTime12Hour(block.time)}
+                                        </div>
+                                      </div>
+                                      <button
+                                        onClick={(e) => {
+                                          e.stopPropagation();
+                                          removeBlock(block.id);
+                                        }}
+                                        className="w-4 h-4 text-gray-400 hover:text-red-400 flex-shrink-0"
+                                      >
+                                        <X />
+                                      </button>
+                                    </div>
+                                    <div
+                                      className="absolute bottom-0 left-0 right-0 h-2 cursor-ns-resize hover:bg-indigo-500/50"
+                                      onMouseDown={(e) => handleResizeStart(e, block.id, block.duration)}
+                                    />
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -1188,6 +1349,7 @@ const ADHDWorkManager = () => {
                     const stats = getProjectStats(project.id);
                     const priority = priorities.find(p => p.id === project.priority);
                     const PriorityIcon = priorityIcons[priority?.icon] || Circle;
+                    const company = companies.find(c => c.id === project.company);
 
                     return (
                       <div
@@ -1198,14 +1360,16 @@ const ADHDWorkManager = () => {
                         onDrop={(e) => handleProjectDrop(e, project)}
                         onDragEnd={handleProjectDragEnd}
                         onClick={() => setSelectedTask({ ...project, type: 'project' })}
-                        className={`bg-gray-800 rounded-xl p-4 border cursor-move transition-all ${
-                          project.archived ? 'border-gray-700 opacity-50 cursor-pointer' : 'border-gray-700 hover:border-indigo-500'
+                        className={`rounded-xl p-4 border cursor-move transition-all ${
+                          company ? company.color : 'bg-gray-800 border-gray-700'
+                        } ${
+                          project.archived ? 'opacity-50 cursor-pointer' : 'hover:border-indigo-500'
                         } ${selectedTask?.id === project.id ? 'ring-2 ring-indigo-500' : ''} ${
                           dragOverProject?.id === project.id ? 'border-t-4 border-t-indigo-500' : ''
                         } ${draggedProject?.id === project.id ? 'opacity-50' : ''}`}
                       >
                         <div className="flex items-start justify-between mb-3">
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 flex-wrap">
                             <div className="w-5 h-5 text-gray-400 cursor-grab active:cursor-grabbing">
                               <GripVertical />
                             </div>
@@ -1213,6 +1377,11 @@ const ADHDWorkManager = () => {
                               <PriorityIcon />
                             </div>
                             <h3 className="text-lg font-semibold">{project.name}</h3>
+                            {company && (
+                              <span className="text-xs px-2 py-0.5 bg-gray-900/50 rounded border border-current">
+                                {company.name}
+                              </span>
+                            )}
                             {project.archived && (
                               <span className="text-xs px-2 py-0.5 bg-gray-700 rounded">Archived</span>
                             )}
@@ -1539,40 +1708,42 @@ const ADHDWorkManager = () => {
                 </select>
               </div>
 
-              {selectedTask.type === 'task' && (
-                <>
-                  <div>
-                    <label className="block text-sm text-gray-400 mb-2">Project</label>
-                    <select
-                      value={selectedTask.projectId || ''}
-                      onChange={(e) => updateTask(selectedTask.id, {
-                        projectId: e.target.value ? parseInt(e.target.value) : null
-                      })}
-                      className="w-full bg-gray-800 border border-gray-700 rounded-lg p-2"
-                    >
-                      <option value="">No Project</option>
-                      {projects.filter(p => !p.archived).map(p => (
-                        <option key={p.id} value={p.id}>{p.name}</option>
-                      ))}
-                    </select>
-                  </div>
+              <div>
+                <label className="block text-sm text-gray-400 mb-2">Company</label>
+                <select
+                  value={selectedTask.company || ''}
+                  onChange={(e) => {
+                    if (selectedTask.type === 'project') {
+                      updateProject(selectedTask.id, { company: e.target.value || null });
+                    } else {
+                      updateTask(selectedTask.id, { company: e.target.value || null });
+                    }
+                  }}
+                  className="w-full bg-gray-800 border border-gray-700 rounded-lg p-2"
+                >
+                  <option value="">None</option>
+                  {companies.map(c => (
+                    <option key={c.id} value={c.id}>{c.name}</option>
+                  ))}
+                </select>
+              </div>
 
-                  <div>
-                    <label className="block text-sm text-gray-400 mb-2">Company</label>
-                    <select
-                      value={selectedTask.company || ''}
-                      onChange={(e) => updateTask(selectedTask.id, {
-                        company: e.target.value || null
-                      })}
-                      className="w-full bg-gray-800 border border-gray-700 rounded-lg p-2"
-                    >
-                      <option value="">None</option>
-                      {companies.map(c => (
-                        <option key={c.id} value={c.id}>{c.name}</option>
-                      ))}
-                    </select>
-                  </div>
-                </>
+              {selectedTask.type === 'task' && (
+                <div>
+                  <label className="block text-sm text-gray-400 mb-2">Project</label>
+                  <select
+                    value={selectedTask.projectId || ''}
+                    onChange={(e) => updateTask(selectedTask.id, {
+                      projectId: e.target.value ? parseInt(e.target.value) : null
+                    })}
+                    className="w-full bg-gray-800 border border-gray-700 rounded-lg p-2"
+                  >
+                    <option value="">No Project</option>
+                    {projects.filter(p => !p.archived).map(p => (
+                      <option key={p.id} value={p.id}>{p.name}</option>
+                    ))}
+                  </select>
+                </div>
               )}
 
               <div>
