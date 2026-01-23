@@ -29,9 +29,32 @@ const ICON_PATHS = {
   'book-open': '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>'
 };
 
+// Parse SVG string into React elements
+const parseSVGPath = (svgString) => {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(`<svg>${svgString}</svg>`, 'image/svg+xml');
+  const elements = [];
+
+  Array.from(doc.documentElement.children).forEach((child, index) => {
+    const tagName = child.tagName;
+    const attrs = {};
+
+    Array.from(child.attributes).forEach(attr => {
+      // Convert hyphenated attributes to camelCase for React
+      const name = attr.name.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+      attrs[name] = attr.value;
+    });
+
+    elements.push(React.createElement(tagName, { key: index, ...attrs }));
+  });
+
+  return elements;
+};
+
 // Lucide Icon Wrapper - renders SVG directly without DOM mutation
 const LucideIcon = ({ name, className = '', ...props }) => {
   const pathData = ICON_PATHS[name] || ICON_PATHS['circle'];
+  const children = parseSVGPath(pathData);
 
   return (
     <svg
@@ -46,8 +69,9 @@ const LucideIcon = ({ name, className = '', ...props }) => {
       strokeLinejoin="round"
       className={className}
       {...props}
-      dangerouslySetInnerHTML={{ __html: pathData }}
-    />
+    >
+      {children}
+    </svg>
   );
 };
 
