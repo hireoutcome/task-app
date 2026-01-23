@@ -1,125 +1,35 @@
-// Icon Components
-const Calendar = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-    <line x1="16" y1="2" x2="16" y2="6"></line>
-    <line x1="8" y1="2" x2="8" y2="6"></line>
-    <line x1="3" y1="10" x2="21" y2="10"></line>
-  </svg>
-);
+// Lucide Icon Wrapper
+const LucideIcon = ({ name, ...props }) => {
+  React.useEffect(() => {
+    if (window.lucide) {
+      window.lucide.createIcons();
+    }
+  });
 
-const Plus = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <line x1="12" y1="5" x2="12" y2="19"></line>
-    <line x1="5" y1="12" x2="19" y2="12"></line>
-  </svg>
-);
+  return React.createElement('i', {
+    'data-lucide': name,
+    ...props
+  });
+};
 
-const Trash2 = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <polyline points="3 6 5 6 21 6"></polyline>
-    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-    <line x1="10" y1="11" x2="10" y2="17"></line>
-    <line x1="14" y1="11" x2="14" y2="17"></line>
-  </svg>
-);
-
-const Clock = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <circle cx="12" cy="12" r="10"></circle>
-    <polyline points="12 6 12 12 16 14"></polyline>
-  </svg>
-);
-
-const CheckCircle2 = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-    <polyline points="22 4 12 14.01 9 11.01"></polyline>
-  </svg>
-);
-
-const Circle = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <circle cx="12" cy="12" r="10"></circle>
-  </svg>
-);
-
-const Brain = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M12 4.52c-1.7 0-3.2.85-4.1 2.15C6.8 6.25 5.6 6 4.5 6 2.6 6 1 7.6 1 9.5c0 1.3.7 2.4 1.8 3 0 .1 0 .2 0 .3 0 1.5.8 2.8 2 3.5-.5.5-.8 1.2-.8 2 0 1.5 1.2 2.7 2.7 2.7.6 0 1.1-.2 1.6-.5.6.9 1.6 1.5 2.7 1.5s2.1-.6 2.7-1.5c.5.3 1 .5 1.6.5 1.5 0 2.7-1.2 2.7-2.7 0-.8-.3-1.5-.8-2 1.2-.7 2-2 2-3.5 0-.1 0-.2 0-.3 1.1-.6 1.8-1.7 1.8-3C23 7.6 21.4 6 19.5 6c-1.1 0-2.2.25-3.4.67C15.2 5.37 13.7 4.52 12 4.52z"></path>
-  </svg>
-);
-
-const Target = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <circle cx="12" cy="12" r="10"></circle>
-    <circle cx="12" cy="12" r="6"></circle>
-    <circle cx="12" cy="12" r="2"></circle>
-  </svg>
-);
-
-const Zap = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
-  </svg>
-);
-
-const ChevronLeft = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <polyline points="15 18 9 12 15 6"></polyline>
-  </svg>
-);
-
-const ChevronRight = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <polyline points="9 18 15 12 9 6"></polyline>
-  </svg>
-);
-
-const Settings = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <circle cx="12" cy="12" r="3"></circle>
-    <path d="M12 1v6m0 6v6m9-9h-6m-6 0H3"></path>
-  </svg>
-);
-
-const X = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <line x1="18" y1="6" x2="6" y2="18"></line>
-    <line x1="6" y1="6" x2="18" y2="18"></line>
-  </svg>
-);
-
-const Check = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <polyline points="20 6 9 17 4 12"></polyline>
-  </svg>
-);
-
-const GripVertical = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <circle cx="9" cy="12" r="1"></circle>
-    <circle cx="9" cy="5" r="1"></circle>
-    <circle cx="9" cy="19" r="1"></circle>
-    <circle cx="15" cy="12" r="1"></circle>
-    <circle cx="15" cy="5" r="1"></circle>
-    <circle cx="15" cy="19" r="1"></circle>
-  </svg>
-);
-
-const Edit2 = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-  </svg>
-);
-
-const Archive = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-    <polyline points="21 8 21 21 3 21 3 8"></polyline>
-    <rect x="1" y="3" width="22" height="5"></rect>
-    <line x1="10" y1="12" x2="14" y2="12"></line>
-  </svg>
-);
+// Icon Components using Lucide
+const Calendar = (props) => <LucideIcon name="calendar" {...props} />;
+const Plus = (props) => <LucideIcon name="plus" {...props} />;
+const Trash2 = (props) => <LucideIcon name="trash-2" {...props} />;
+const Clock = (props) => <LucideIcon name="clock" {...props} />;
+const CheckCircle2 = (props) => <LucideIcon name="check-circle-2" {...props} />;
+const Circle = (props) => <LucideIcon name="circle" {...props} />;
+const Brain = (props) => <LucideIcon name="brain" {...props} />;
+const Target = (props) => <LucideIcon name="target" {...props} />;
+const Zap = (props) => <LucideIcon name="zap" {...props} />;
+const ChevronLeft = (props) => <LucideIcon name="chevron-left" {...props} />;
+const ChevronRight = (props) => <LucideIcon name="chevron-right" {...props} />;
+const Settings = (props) => <LucideIcon name="settings" {...props} />;
+const X = (props) => <LucideIcon name="x" {...props} />;
+const Check = (props) => <LucideIcon name="check" {...props} />;
+const GripVertical = (props) => <LucideIcon name="grip-vertical" {...props} />;
+const Edit2 = (props) => <LucideIcon name="edit-2" {...props} />;
+const Archive = (props) => <LucideIcon name="archive" {...props} />;
 
 // Main App Component
 const ADHDWorkManager = () => {
@@ -137,14 +47,35 @@ const ADHDWorkManager = () => {
     { id: 'personal', name: 'Personal', color: 'bg-green-900/30 border-green-500 text-green-300' }
   ];
 
-  // Icon mapping
+  // Icon mapping - expanded with more Lucide icons
+  const Star = (props) => <LucideIcon name="star" {...props} />;
+  const Flame = (props) => <LucideIcon name="flame" {...props} />;
+  const Rocket = (props) => <LucideIcon name="rocket" {...props} />;
+  const Sparkles = (props) => <LucideIcon name="sparkles" {...props} />;
+  const Award = (props) => <LucideIcon name="award" {...props} />;
+  const TrendingUp = (props) => <LucideIcon name="trending-up" {...props} />;
+  const Lightbulb = (props) => <LucideIcon name="lightbulb" {...props} />;
+  const Heart = (props) => <LucideIcon name="heart" {...props} />;
+  const Briefcase = (props) => <LucideIcon name="briefcase" {...props} />;
+  const BookOpen = (props) => <LucideIcon name="book-open" {...props} />;
+
   const priorityIcons = {
     zap: Zap,
     target: Target,
     circle: Circle,
     brain: Brain,
     clock: Clock,
-    calendar: Calendar
+    calendar: Calendar,
+    star: Star,
+    flame: Flame,
+    rocket: Rocket,
+    sparkles: Sparkles,
+    award: Award,
+    trendingUp: TrendingUp,
+    lightbulb: Lightbulb,
+    heart: Heart,
+    briefcase: Briefcase,
+    bookOpen: BookOpen
   };
 
   // Core data
@@ -1467,7 +1398,7 @@ const ADHDWorkManager = () => {
 
                   <div>
                     <label className="block text-sm text-gray-400 mb-2">App Icon</label>
-                    <div className="grid grid-cols-6 gap-2">
+                    <div className="grid grid-cols-8 gap-2">
                       {Object.keys(priorityIcons).map(iconKey => {
                         const IconComponent = priorityIcons[iconKey];
                         return (
@@ -1479,6 +1410,7 @@ const ADHDWorkManager = () => {
                                 ? 'bg-gradient-to-r from-indigo-500 to-purple-600 border-indigo-400 shadow-lg shadow-indigo-500/50 scale-110'
                                 : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-indigo-500/50'
                             }`}
+                            title={iconKey}
                           >
                             <div className="w-6 h-6">
                               <IconComponent />
@@ -1559,11 +1491,21 @@ const ADHDWorkManager = () => {
                           className="bg-gray-800 border border-gray-600 rounded px-2 py-1 text-sm"
                         >
                           <option value="zap">⚡ Zap</option>
+                          <option value="flame">🔥 Flame</option>
+                          <option value="rocket">🚀 Rocket</option>
+                          <option value="star">⭐ Star</option>
+                          <option value="sparkles">✨ Sparkles</option>
                           <option value="target">🎯 Target</option>
-                          <option value="circle">⭕ Circle</option>
+                          <option value="award">🏆 Award</option>
+                          <option value="trendingUp">📈 Trending Up</option>
                           <option value="brain">🧠 Brain</option>
+                          <option value="lightbulb">💡 Lightbulb</option>
+                          <option value="heart">❤️ Heart</option>
                           <option value="clock">🕐 Clock</option>
                           <option value="calendar">📅 Calendar</option>
+                          <option value="briefcase">💼 Briefcase</option>
+                          <option value="bookOpen">📖 Book</option>
+                          <option value="circle">⭕ Circle</option>
                         </select>
                         <select
                           value={priority.color}
@@ -1608,11 +1550,21 @@ const ADHDWorkManager = () => {
                       className="bg-gray-700 border border-gray-600 rounded px-2 py-2 text-sm"
                     >
                       <option value="zap">⚡ Zap</option>
+                      <option value="flame">🔥 Flame</option>
+                      <option value="rocket">🚀 Rocket</option>
+                      <option value="star">⭐ Star</option>
+                      <option value="sparkles">✨ Sparkles</option>
                       <option value="target">🎯 Target</option>
-                      <option value="circle">⭕ Circle</option>
+                      <option value="award">🏆 Award</option>
+                      <option value="trendingUp">📈 Trending Up</option>
                       <option value="brain">🧠 Brain</option>
+                      <option value="lightbulb">💡 Lightbulb</option>
+                      <option value="heart">❤️ Heart</option>
                       <option value="clock">🕐 Clock</option>
                       <option value="calendar">📅 Calendar</option>
+                      <option value="briefcase">💼 Briefcase</option>
+                      <option value="bookOpen">📖 Book</option>
+                      <option value="circle">⭕ Circle</option>
                     </select>
                     <select
                       value={newPriorityColor}
