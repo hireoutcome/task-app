@@ -1,233 +1,10 @@
-// Pure JSX Icon Components - No DOM parsing required
-
-// Base SVG Icon Wrapper Component
-const SvgIcon = ({ children, className = '', ...props }) => {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      {...props}
-    >
-      {children}
-    </svg>
-  );
-};
-
-// Icon Components - Each defined with pure JSX
-const Calendar = (props) => (
-  <SvgIcon {...props}>
-    <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-    <line x1="16" x2="16" y1="2" y2="6" />
-    <line x1="8" x2="8" y1="2" y2="6" />
-    <line x1="3" x2="21" y1="10" y2="10" />
-  </SvgIcon>
-);
-
-const Plus = (props) => (
-  <SvgIcon {...props}>
-    <path d="M5 12h14" />
-    <path d="M12 5v14" />
-  </SvgIcon>
-);
-
-const Trash2 = (props) => (
-  <SvgIcon {...props}>
-    <path d="M3 6h18" />
-    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
-    <line x1="10" x2="10" y1="11" y2="17" />
-    <line x1="14" x2="14" y1="11" y2="17" />
-  </SvgIcon>
-);
-
-const Clock = (props) => (
-  <SvgIcon {...props}>
-    <circle cx="12" cy="12" r="10" />
-    <polyline points="12 6 12 12 16 14" />
-  </SvgIcon>
-);
-
-const CheckCircle2 = (props) => (
-  <SvgIcon {...props}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="m9 12 2 2 4-4" />
-  </SvgIcon>
-);
-
-const Circle = (props) => (
-  <SvgIcon {...props}>
-    <circle cx="12" cy="12" r="10" />
-  </SvgIcon>
-);
-
-const Brain = (props) => (
-  <SvgIcon {...props}>
-    <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z" />
-    <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z" />
-  </SvgIcon>
-);
-
-const Target = (props) => (
-  <SvgIcon {...props}>
-    <circle cx="12" cy="12" r="10" />
-    <circle cx="12" cy="12" r="6" />
-    <circle cx="12" cy="12" r="2" />
-  </SvgIcon>
-);
-
-const Zap = (props) => (
-  <SvgIcon {...props}>
-    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
-  </SvgIcon>
-);
-
-const ChevronLeft = (props) => (
-  <SvgIcon {...props}>
-    <path d="m15 18-6-6 6-6" />
-  </SvgIcon>
-);
-
-const ChevronRight = (props) => (
-  <SvgIcon {...props}>
-    <path d="m9 18 6-6-6-6" />
-  </SvgIcon>
-);
-
-const Settings = (props) => (
-  <SvgIcon {...props}>
-    <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
-    <circle cx="12" cy="12" r="3" />
-  </SvgIcon>
-);
-
-const X = (props) => (
-  <SvgIcon {...props}>
-    <path d="M18 6 6 18" />
-    <path d="m6 6 12 12" />
-  </SvgIcon>
-);
-
-const Check = (props) => (
-  <SvgIcon {...props}>
-    <polyline points="20 6 9 17 4 12" />
-  </SvgIcon>
-);
-
-const GripVertical = (props) => (
-  <SvgIcon {...props}>
-    <circle cx="9" cy="12" r="1" />
-    <circle cx="9" cy="5" r="1" />
-    <circle cx="9" cy="19" r="1" />
-    <circle cx="15" cy="12" r="1" />
-    <circle cx="15" cy="5" r="1" />
-    <circle cx="15" cy="19" r="1" />
-  </SvgIcon>
-);
-
-const Edit2 = (props) => (
-  <SvgIcon {...props}>
-    <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-    <path d="m15 5 4 4" />
-  </SvgIcon>
-);
-
-const Archive = (props) => (
-  <SvgIcon {...props}>
-    <rect width="20" height="5" x="2" y="3" rx="1" />
-    <path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" />
-    <path d="M10 12h4" />
-  </SvgIcon>
-);
-
-const Star = (props) => (
-  <SvgIcon {...props}>
-    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-  </SvgIcon>
-);
-
-const Flame = (props) => (
-  <SvgIcon {...props}>
-    <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
-  </SvgIcon>
-);
-
-const Rocket = (props) => (
-  <SvgIcon {...props}>
-    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
-    <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
-    <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
-    <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
-  </SvgIcon>
-);
-
-const Sparkles = (props) => (
-  <SvgIcon {...props}>
-    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-    <path d="M5 3v4" />
-    <path d="M19 17v4" />
-    <path d="M3 5h4" />
-    <path d="M17 19h4" />
-  </SvgIcon>
-);
-
-const Award = (props) => (
-  <SvgIcon {...props}>
-    <circle cx="12" cy="8" r="6" />
-    <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" />
-  </SvgIcon>
-);
-
-const TrendingUp = (props) => (
-  <SvgIcon {...props}>
-    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
-    <polyline points="16 7 22 7 22 13" />
-  </SvgIcon>
-);
-
-const Lightbulb = (props) => (
-  <SvgIcon {...props}>
-    <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
-    <path d="M9 18h6" />
-    <path d="M10 22h4" />
-  </SvgIcon>
-);
-
-const Heart = (props) => (
-  <SvgIcon {...props}>
-    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-  </SvgIcon>
-);
-
-const Briefcase = (props) => (
-  <SvgIcon {...props}>
-    <rect width="20" height="14" x="2" y="7" rx="2" ry="2" />
-    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-  </SvgIcon>
-);
-
-const BookOpen = (props) => (
-  <SvgIcon {...props}>
-    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-  </SvgIcon>
-);
-
-
 // Main App Component
 const ADHDWorkManager = () => {
   // Default priorities
   const DEFAULT_PRIORITIES = [
-    { id: 'high', name: 'High', icon: 'zap', color: 'text-red-400' },
-    { id: 'medium', name: 'Medium', icon: 'target', color: 'text-yellow-400' },
-    { id: 'low', name: 'Low', icon: 'circle', color: 'text-gray-400' }
+    { id: 'high', name: 'High', color: 'text-red-400' },
+    { id: 'medium', name: 'Medium', color: 'text-yellow-400' },
+    { id: 'low', name: 'Low', color: 'text-gray-400' }
   ];
 
   // Default companies
@@ -236,27 +13,6 @@ const ADHDWorkManager = () => {
     { id: 'hireoutcome', name: 'HireOutcome', color: 'bg-purple-900/30 border-purple-500 text-purple-300' },
     { id: 'personal', name: 'Personal', color: 'bg-green-900/30 border-green-500 text-green-300' }
   ];
-
-  // Icon mapping - expanded with more Lucide icons
-
-  const priorityIcons = {
-    zap: Zap,
-    target: Target,
-    circle: Circle,
-    brain: Brain,
-    clock: Clock,
-    calendar: Calendar,
-    star: Star,
-    flame: Flame,
-    rocket: Rocket,
-    sparkles: Sparkles,
-    award: Award,
-    trendingUp: TrendingUp,
-    lightbulb: Lightbulb,
-    heart: Heart,
-    briefcase: Briefcase,
-    bookOpen: BookOpen
-  };
 
   // Core data
   const [tasks, setTasks] = React.useState([]);
@@ -307,13 +63,11 @@ const ADHDWorkManager = () => {
   // Settings state
   const [newPriorityName, setNewPriorityName] = React.useState('');
   const [newPriorityColor, setNewPriorityColor] = React.useState('text-blue-400');
-  const [newPriorityIcon, setNewPriorityIcon] = React.useState('circle');
   const [newCompanyName, setNewCompanyName] = React.useState('');
   const [newCompanyColor, setNewCompanyColor] = React.useState('bg-blue-900/30 border-blue-500 text-blue-300');
 
   // App customization
   const [appName, setAppName] = React.useState('ADHD Work Manager');
-  const [appIcon, setAppIcon] = React.useState('brain');
 
   // Load data from localStorage on mount
   React.useEffect(() => {
@@ -365,11 +119,6 @@ const ADHDWorkManager = () => {
           setAppName(savedAppName.value);
         }
 
-        const savedAppIcon = await window.storage.get('adhd-app-icon');
-        if (savedAppIcon?.value) {
-          setAppIcon(savedAppIcon.value);
-        }
-
         console.log('Data loaded successfully');
       } catch (error) {
         console.error('Error loading data:', error);
@@ -389,14 +138,13 @@ const ADHDWorkManager = () => {
         await window.storage.set('adhd-priorities', JSON.stringify(priorities));
         await window.storage.set('adhd-companies', JSON.stringify(companies));
         await window.storage.set('adhd-app-name', appName);
-        await window.storage.set('adhd-app-icon', appIcon);
       } catch (error) {
         console.error('Error saving data:', error);
       }
     };
 
     saveData();
-  }, [tasks, timeBlocks, projects, priorities, companies, appName, appIcon]);
+  }, [tasks, timeBlocks, projects, priorities, companies, appName]);
 
   // Task Management Functions
   const addTask = () => {
@@ -861,14 +609,12 @@ const ADHDWorkManager = () => {
     const priority = {
       id: Date.now().toString(),
       name: newPriorityName,
-      icon: newPriorityIcon,
       color: newPriorityColor
     };
 
     setPriorities([...priorities, priority]);
     setNewPriorityName('');
     setNewPriorityColor('text-blue-400');
-    setNewPriorityIcon('circle');
   };
 
   const deletePriority = (priorityId) => {
@@ -1010,9 +756,6 @@ const ADHDWorkManager = () => {
         <div className="bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 backdrop-blur-xl rounded-2xl p-6 border border-white/10 shadow-2xl shadow-indigo-500/20">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/50 text-white">
-                {React.createElement(priorityIcons[appIcon] || Brain, { className: "w-7 h-7" })}
-              </div>
               <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-indigo-200 via-purple-200 to-pink-200 bg-clip-text text-transparent">
                 {appName}
               </h1>
@@ -1027,10 +770,7 @@ const ADHDWorkManager = () => {
                     : 'bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10'
                 }`}
               >
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4"><Calendar /></div>
-                  <span className="hidden sm:inline">Today</span>
-                </div>
+                Today
               </button>
               <button
                 onClick={() => setView('projects')}
@@ -1040,10 +780,7 @@ const ADHDWorkManager = () => {
                     : 'bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10'
                 }`}
               >
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4"><Target /></div>
-                  <span className="hidden sm:inline">Projects</span>
-                </div>
+                Projects
               </button>
               <button
                 onClick={() => setView('settings')}
@@ -1053,10 +790,7 @@ const ADHDWorkManager = () => {
                     : 'bg-white/5 text-gray-300 hover:bg-white/10 border border-white/10'
                 }`}
               >
-                <div className="flex items-center gap-2">
-                  <div className="w-4 h-4"><Settings /></div>
-                  <span className="hidden sm:inline">Settings</span>
-                </div>
+                Settings
               </button>
             </div>
           </div>
@@ -1078,7 +812,7 @@ const ADHDWorkManager = () => {
             onClick={addTask}
             className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 rounded-lg flex items-center justify-center transition-all duration-200 shadow-lg shadow-indigo-500/50 group-hover:scale-110"
           >
-            <div className="w-5 h-5"><Plus /></div>
+            +
           </button>
         </div>
       </div>
@@ -1100,7 +834,6 @@ const ADHDWorkManager = () => {
             <div className="space-y-2 max-h-[calc(100vh-280px)] overflow-y-auto">
               {unscheduledTasks.map(task => {
                 const priority = priorities.find(p => p.id === task.priority);
-                const PriorityIcon = priorityIcons[priority?.icon] || Circle;
 
                 return (
                   <div
@@ -1125,7 +858,7 @@ const ADHDWorkManager = () => {
                         className="mt-0.5 flex-shrink-0"
                       >
                         <div className={`w-5 h-5 ${task.completed ? 'text-green-400' : 'text-gray-400'}`}>
-                          {task.completed ? <CheckCircle2 /> : <Circle />}
+                          {task.completed ? '✓' : '○'}
                         </div>
                       </button>
                       <div className="flex-1 min-w-0">
@@ -1133,9 +866,9 @@ const ADHDWorkManager = () => {
                           {task.text}
                         </p>
                         <div className="flex items-center gap-2 mt-1">
-                          <div className={`w-3 h-3 ${priority?.color}`}>
-                            <PriorityIcon />
-                          </div>
+                          <span className={`text-xs ${priority?.color}`}>
+                            {priority?.name}
+                          </span>
                           {task.company && (
                             <span className={`text-xs px-2 py-0.5 rounded border ${
                               companies.find(c => c.id === task.company)?.color
@@ -1174,7 +907,7 @@ const ADHDWorkManager = () => {
                     }}
                     className="w-9 h-9 hover:bg-white/10 rounded-lg flex items-center justify-center transition-all duration-200 border border-white/10 hover:border-indigo-500/50"
                   >
-                    <div className="w-5 h-5"><ChevronLeft /></div>
+                    &lt;
                   </button>
                   <h3 className="text-lg font-semibold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                     {calendarView === 'day'
@@ -1203,7 +936,7 @@ const ADHDWorkManager = () => {
                     }}
                     className="w-9 h-9 hover:bg-white/10 rounded-lg flex items-center justify-center transition-all duration-200 border border-white/10 hover:border-indigo-500/50"
                   >
-                    <div className="w-5 h-5"><ChevronRight /></div>
+                    &gt;
                   </button>
                   <button
                     onClick={() => setSelectedDate(new Date().toISOString().split('T')[0])}
@@ -1289,7 +1022,6 @@ const ADHDWorkManager = () => {
                       if (!task) return null;
 
                       const priority = priorities.find(p => p.id === task.priority);
-                      const PriorityIcon = priorityIcons[priority?.icon] || Circle;
 
                       return (
                         <div
@@ -1306,9 +1038,9 @@ const ADHDWorkManager = () => {
                           <div className="flex items-start justify-between h-full">
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-1 mb-1">
-                                <div className={`w-3 h-3 ${priority?.color}`}>
-                                  <PriorityIcon />
-                                </div>
+                                <span className={`text-xs ${priority?.color}`}>
+                                  {priority?.name}
+                                </span>
                                 <span className="text-sm font-semibold truncate">{task.text}</span>
                               </div>
                               <div className="text-xs text-gray-300">
@@ -1322,7 +1054,7 @@ const ADHDWorkManager = () => {
                               }}
                               className="w-5 h-5 text-gray-400 hover:text-red-400 flex-shrink-0"
                             >
-                              <X />
+                              ×
                             </button>
                           </div>
                           <div
@@ -1402,7 +1134,6 @@ const ADHDWorkManager = () => {
                                 if (!task) return null;
 
                                 const priority = priorities.find(p => p.id === task.priority);
-                                const PriorityIcon = priorityIcons[priority?.icon] || Circle;
 
                                 return (
                                   <div
@@ -1419,9 +1150,9 @@ const ADHDWorkManager = () => {
                                     <div className="flex items-start justify-between h-full">
                                       <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-1 mb-1">
-                                          <div className={`w-3 h-3 ${priority?.color}`}>
-                                            <PriorityIcon />
-                                          </div>
+                                          <span className={`text-xs ${priority?.color}`}>
+                                            {priority?.name}
+                                          </span>
                                           <span className="text-xs font-semibold truncate">{task.text}</span>
                                         </div>
                                         <div className="text-xs text-gray-300">
@@ -1435,7 +1166,7 @@ const ADHDWorkManager = () => {
                                         }}
                                         className="w-4 h-4 text-gray-400 hover:text-red-400 flex-shrink-0"
                                       >
-                                        <X />
+                                        ×
                                       </button>
                                     </div>
                                     <div
@@ -1464,8 +1195,7 @@ const ADHDWorkManager = () => {
                   onClick={() => setShowNewProjectModal(true)}
                   className="px-4 py-2.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 rounded-xl flex items-center gap-2 transition-all duration-200 shadow-lg shadow-indigo-500/50 font-medium"
                 >
-                  <div className="w-4 h-4"><Plus /></div>
-                  New Project
+                  + New Project
                 </button>
               </div>
 
@@ -1476,7 +1206,6 @@ const ADHDWorkManager = () => {
                   .map(project => {
                     const stats = getProjectStats(project.id);
                     const priority = priorities.find(p => p.id === project.priority);
-                    const PriorityIcon = priorityIcons[priority?.icon] || Circle;
                     const company = companies.find(c => c.id === project.company);
 
                     return (
@@ -1498,12 +1227,10 @@ const ADHDWorkManager = () => {
                       >
                         <div className="flex items-start justify-between mb-3">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <div className="w-5 h-5 text-gray-400 cursor-grab active:cursor-grabbing">
-                              <GripVertical />
-                            </div>
-                            <div className={`w-5 h-5 ${priority?.color}`}>
-                              <PriorityIcon />
-                            </div>
+                            <span className="text-gray-400 cursor-grab active:cursor-grabbing">⋮⋮</span>
+                            <span className={`text-xs ${priority?.color}`}>
+                              {priority?.name}
+                            </span>
                             <h3 className="text-lg font-semibold">{project.name}</h3>
                             {company && (
                               <span className="text-xs px-2 py-0.5 bg-gray-900/50 rounded border border-current">
@@ -1532,12 +1259,10 @@ const ADHDWorkManager = () => {
 
                         <div className="flex items-center gap-4 text-sm text-gray-400">
                           <div className="flex items-center gap-1">
-                            <div className="w-4 h-4"><Clock /></div>
-                            {stats.timeTracked}
+                            Time: {stats.timeTracked}
                           </div>
                           <div className="flex items-center gap-1">
-                            <div className="w-4 h-4"><Calendar /></div>
-                            {stats.scheduled} scheduled
+                            Scheduled: {stats.scheduled}
                           </div>
                         </div>
                       </div>
@@ -1576,39 +1301,6 @@ const ADHDWorkManager = () => {
                     />
                   </div>
 
-                  <div>
-                    <label className="block text-sm text-gray-400 mb-2">App Icon</label>
-                    <div className="grid grid-cols-8 gap-2">
-                      {Object.keys(priorityIcons).map(iconKey => {
-                        const IconComponent = priorityIcons[iconKey];
-                        return (
-                          <button
-                            key={iconKey}
-                            onClick={() => setAppIcon(iconKey)}
-                            className={`p-3 rounded-lg border transition-all duration-200 ${
-                              appIcon === iconKey
-                                ? 'bg-gradient-to-r from-indigo-500 to-purple-600 border-indigo-400 shadow-lg shadow-indigo-500/50 scale-110'
-                                : 'bg-white/5 border-white/10 hover:bg-white/10 hover:border-indigo-500/50'
-                            }`}
-                            title={iconKey}
-                          >
-                            <div className="w-6 h-6">
-                              <IconComponent />
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <div className="pt-4 border-t border-white/10">
-                    <div className="flex items-center gap-3 p-4 bg-white/5 rounded-lg border border-white/10">
-                      <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center shadow-lg">
-                        {React.createElement(priorityIcons[appIcon] || Brain, { className: "w-6 h-6" })}
-                      </div>
-                      <span className="text-lg font-semibold">{appName}</span>
-                    </div>
-                  </div>
                 </div>
               </div>
 
@@ -1653,40 +1345,14 @@ const ADHDWorkManager = () => {
 
                 <div className="space-y-3 mb-4">
                   {priorities.map(priority => {
-                    const PriorityIcon = priorityIcons[priority.icon];
                     return (
                       <div key={priority.id} className="flex items-center gap-3 p-3 bg-gray-700 rounded-lg">
-                        <div className={`w-5 h-5 ${priority.color}`}>
-                          <PriorityIcon />
-                        </div>
                         <input
                           type="text"
                           value={priority.name}
                           onChange={(e) => updatePrioritySettings(priority.id, { name: e.target.value })}
                           className="flex-1 bg-gray-800 border border-gray-600 rounded px-2 py-1 text-sm"
                         />
-                        <select
-                          value={priority.icon}
-                          onChange={(e) => updatePrioritySettings(priority.id, { icon: e.target.value })}
-                          className="bg-gray-800 border border-gray-600 rounded px-2 py-1 text-sm"
-                        >
-                          <option value="zap">⚡ Zap</option>
-                          <option value="flame">🔥 Flame</option>
-                          <option value="rocket">🚀 Rocket</option>
-                          <option value="star">⭐ Star</option>
-                          <option value="sparkles">✨ Sparkles</option>
-                          <option value="target">🎯 Target</option>
-                          <option value="award">🏆 Award</option>
-                          <option value="trendingUp">📈 Trending Up</option>
-                          <option value="brain">🧠 Brain</option>
-                          <option value="lightbulb">💡 Lightbulb</option>
-                          <option value="heart">❤️ Heart</option>
-                          <option value="clock">🕐 Clock</option>
-                          <option value="calendar">📅 Calendar</option>
-                          <option value="briefcase">💼 Briefcase</option>
-                          <option value="bookOpen">📖 Book</option>
-                          <option value="circle">⭕ Circle</option>
-                        </select>
                         <select
                           value={priority.color}
                           onChange={(e) => updatePrioritySettings(priority.id, { color: e.target.value })}
@@ -1706,7 +1372,7 @@ const ADHDWorkManager = () => {
                           onClick={() => deletePriority(priority.id)}
                           className="w-8 h-8 text-red-400 hover:text-red-300 flex items-center justify-center"
                         >
-                          <div className="w-4 h-4"><Trash2 /></div>
+                          ×
                         </button>
                       </div>
                     );
@@ -1724,28 +1390,6 @@ const ADHDWorkManager = () => {
                       placeholder="Priority name"
                       className="flex-1 bg-gray-700 border border-gray-600 rounded px-3 py-2 text-sm"
                     />
-                    <select
-                      value={newPriorityIcon}
-                      onChange={(e) => setNewPriorityIcon(e.target.value)}
-                      className="bg-gray-700 border border-gray-600 rounded px-2 py-2 text-sm"
-                    >
-                      <option value="zap">⚡ Zap</option>
-                      <option value="flame">🔥 Flame</option>
-                      <option value="rocket">🚀 Rocket</option>
-                      <option value="star">⭐ Star</option>
-                      <option value="sparkles">✨ Sparkles</option>
-                      <option value="target">🎯 Target</option>
-                      <option value="award">🏆 Award</option>
-                      <option value="trendingUp">📈 Trending Up</option>
-                      <option value="brain">🧠 Brain</option>
-                      <option value="lightbulb">💡 Lightbulb</option>
-                      <option value="heart">❤️ Heart</option>
-                      <option value="clock">🕐 Clock</option>
-                      <option value="calendar">📅 Calendar</option>
-                      <option value="briefcase">💼 Briefcase</option>
-                      <option value="bookOpen">📖 Book</option>
-                      <option value="circle">⭕ Circle</option>
-                    </select>
                     <select
                       value={newPriorityColor}
                       onChange={(e) => setNewPriorityColor(e.target.value)}
@@ -1765,7 +1409,7 @@ const ADHDWorkManager = () => {
                       onClick={addPriority}
                       className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded flex items-center gap-2"
                     >
-                      <div className="w-4 h-4"><Plus /></div>
+                      +
                     </button>
                   </div>
                 </div>
@@ -1802,7 +1446,7 @@ const ADHDWorkManager = () => {
                         onClick={() => deleteCompany(company.id)}
                         className="w-8 h-8 text-red-400 hover:text-red-300 flex items-center justify-center"
                       >
-                        <div className="w-4 h-4"><Trash2 /></div>
+                        ×
                       </button>
                     </div>
                   ))}
@@ -1838,7 +1482,7 @@ const ADHDWorkManager = () => {
                       onClick={addCompany}
                       className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded flex items-center gap-2"
                     >
-                      <div className="w-4 h-4"><Plus /></div>
+                      +
                     </button>
                   </div>
                 </div>
@@ -1870,7 +1514,7 @@ const ADHDWorkManager = () => {
                 onClick={() => setSelectedTask(null)}
                 className="w-8 h-8 hover:bg-gray-800 rounded-lg flex items-center justify-center"
               >
-                <div className="w-5 h-5"><X /></div>
+                ×
               </button>
             </div>
 
@@ -1991,7 +1635,7 @@ const ADHDWorkManager = () => {
                           className="flex-shrink-0"
                         >
                           <div className={`w-4 h-4 ${item.completed ? 'text-green-400' : 'text-gray-400'}`}>
-                            {item.completed ? <CheckCircle2 /> : <Circle />}
+                            {item.completed ? '✓' : '○'}
                           </div>
                         </button>
                         <span className={`flex-1 ${item.completed ? 'line-through text-gray-500' : ''}`}>
@@ -2001,7 +1645,7 @@ const ADHDWorkManager = () => {
                           onClick={() => deleteChecklistItem(selectedTask.id, item.id)}
                           className="w-4 h-4 text-red-400 hover:text-red-300"
                         >
-                          <X />
+                          ×
                         </button>
                       </div>
                     ))}
@@ -2019,7 +1663,7 @@ const ADHDWorkManager = () => {
                       onClick={() => addChecklistItem(selectedTask.id)}
                       className="px-3 bg-indigo-600 hover:bg-indigo-700 rounded-lg"
                     >
-                      <div className="w-4 h-4"><Plus /></div>
+                      +
                     </button>
                   </div>
                 </div>
@@ -2035,7 +1679,6 @@ const ADHDWorkManager = () => {
                     }}
                     className="w-full py-2 bg-red-600 hover:bg-red-700 rounded-lg flex items-center justify-center gap-2"
                   >
-                    <div className="w-4 h-4"><Trash2 /></div>
                     Delete Project
                   </button>
                 ) : (
@@ -2047,7 +1690,6 @@ const ADHDWorkManager = () => {
                     }}
                     className="w-full py-2 bg-red-600 hover:bg-red-700 rounded-lg flex items-center justify-center gap-2"
                   >
-                    <div className="w-4 h-4"><Trash2 /></div>
                     Delete Task
                   </button>
                 )}
