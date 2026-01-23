@@ -32,20 +32,28 @@ const ICON_PATHS = {
 // Parse SVG string into React elements
 const parseSVGPath = (svgString) => {
   const parser = new DOMParser();
-  const doc = parser.parseFromString(`<svg>${svgString}</svg>`, 'image/svg+xml');
+  const doc = parser.parseFromString(`<svg xmlns="http://www.w3.org/2000/svg">${svgString}</svg>`, 'image/svg+xml');
   const elements = [];
 
-  Array.from(doc.documentElement.children).forEach((child, index) => {
-    const tagName = child.tagName;
-    const attrs = {};
+  // Filter only element nodes (nodeType === 1), skip text nodes
+  Array.from(doc.documentElement.childNodes).forEach((child, index) => {
+    if (child.nodeType === 1) { // Element node
+      const tagName = child.tagName.toLowerCase();
+      const attrs = {};
 
-    Array.from(child.attributes).forEach(attr => {
-      // Convert hyphenated attributes to camelCase for React
-      const name = attr.name.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-      attrs[name] = attr.value;
-    });
+      Array.from(child.attributes).forEach(attr => {
+        // Convert hyphenated attributes to camelCase for React
+        let name = attr.name;
+        if (name.includes('-')) {
+          name = name.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+        }
+        // Handle special SVG attributes
+        if (name === 'class') name = 'className';
+        attrs[name] = attr.value;
+      });
 
-    elements.push(React.createElement(tagName, { key: index, ...attrs }));
+      elements.push(React.createElement(tagName, { key: index, ...attrs }));
+    }
   });
 
   return elements;
